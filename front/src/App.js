@@ -1,13 +1,15 @@
 import './App.css';
 import Map from './components/Map.jsx';
 import NavBar from  './components/NavBar.jsx';
+import ForecastData from './components/ForecastData.jsx';
 import credentials from "./credentials";
 
 const mapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${credentials.mapsKey}`;
 function App() {
   return (
     <div className="App">
-        <NavBar />
+      <NavBar />
+        <ForecastData />
           <Map
               googleMapURL={mapURL}
               containerElement= {<div style={{height: '400px'}}/>}
