@@ -1,15 +1,18 @@
 import './App.css';
 import Map from './components/Map.jsx';
 import NavBar from  './components/NavBar.jsx';
-import ForecastData from './components/ForecastData.jsx';
+import Container from './components/Container.jsx'
+
 import credentials from "./credentials";
+import ForecastData from "./components/ForecastData";
+import React from "react";
 
 const mapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${credentials.mapsKey}`;
 function App() {
   return (
     <div className="App">
-      <NavBar />
-        <ForecastData />
+      <h1>Aplicacion del TFG</h1>
+      <ForecastData />
           <Map
               googleMapURL={mapURL}
               containerElement= {<div style={{height: '400px'}}/>}

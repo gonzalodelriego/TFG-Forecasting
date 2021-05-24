@@ -8,7 +8,7 @@ import {
 const Map = (props) =>{
     return (
     <GoogleMap
-        defaultZoom={9}
+        defaultZoom={10}
         defaultCenter = {{lat : 43.428299, lng: -3.799151}}
     />
 

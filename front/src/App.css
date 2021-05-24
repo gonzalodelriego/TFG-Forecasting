@@ -1,3 +1,8 @@
 .appbackground{
     background-color: #b2cdb2;
 }
+h1{
+    text-align: center;
+    font-size:30px;
+    font-family: sans-serif;
+}
