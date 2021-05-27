@@ -13,6 +13,15 @@ const Map = (props) =>{
             defaultZoom={10}
             defaultCenter = {{lat : 43.428299, lng: -3.799151}}
         >
+            {/*PUNTO DE MEDICIÓN*/}
+            <Marker
+                title = {'Messurement point'}
+                label = {'P'}
+                position={{
+                    lat: 44.3171689,
+                    lng: -4.2709794
+                }}
+            />
             {/*SEGUNDA_SARDINERO*/}
             <Marker
                 title = {'Segunda'}

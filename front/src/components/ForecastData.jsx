@@ -7,8 +7,18 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import axios from "axios";
+import credentials from "/Users/G/Desktop/Uneat/Semestre2/TFG/code-repository/TFG-Forecasting/front/src/credentials.js";
 
-const json_path = require('/Users/G/Desktop/Uneat/Semestre2/TFG/code-repository/TFG-Forecasting/front/src/storage/web.json')
+ const json_path = require('/Users/G/Desktop/Uneat/Semestre2/TFG/code-repository/TFG-Forecasting/front/src/storage/web.json')
+
+// async function getData() {
+//     let res = await axios.get(`${credentials.cloud_function}`);
+//     const data = res.data;
+//     console.log(data);
+// }
+//
+// const json_path = getData();
 
 const useStyles = makeStyles({
     table: {
