@@ -61,6 +61,11 @@ export default function DenseTable() {
                                 <TableCell align ='right'>{row}</TableCell>
                         ))}
                     </TableRow>
+                    <TableRow>
+                        {json_path['waterTemperature'].map((row =>
+                                <TableCell align ='right'>{row}</TableCell>
+                        ))}
+                    </TableRow>
                 </TableBody>
             </Table>
         </TableContainer>

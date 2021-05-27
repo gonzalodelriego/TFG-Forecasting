@@ -5,8 +5,41 @@ import pandas as pd
 import time
 import json
 import copy
+import numpy as np
 from sklearn.linear_model import LinearRegression
+from datetime import datetime
+import os
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "path_to_your_.json_credential_file"
 
+from google.cloud import storage
+
+# def download_blob(bucket_name, source_blob_name, destination_file_name):
+#     """Downloads a blob from the bucket."""
+#     # bucket_name = "your-bucket-name"
+#     # source_blob_name = "storage-object-name"
+#     # destination_file_name = "local/path/to/file"
+
+#     storage_client = storage.Client()
+
+#     bucket = storage_client.bucket(bucket_name)
+
+#     # Construct a client side representation of a blob.
+#     # Note `Bucket.blob` differs from `Bucket.get_blob` as it doesn't retrieve
+#     # any content from Google Cloud Storage. As we don't need additional data,
+#     # using `Bucket.blob` is preferred here.
+#     blob = bucket.blob(source_blob_name)
+#     blob.download_to_filename(destination_file_name)
+
+#     print(
+#         "Blob {} downloaded to {}.".format(
+#             source_blob_name, destination_file_name
+#         ))
+
+
+# download_blob('tfg_model_data','calificated_history.csv','/Users/G/Desktop/')
+# Este método se encarga de recuperar de la API los datos meteorológicos necesarios para la calificación:
+# SwellPeriod, SwellHeight, SwellDirection, WindSpeed, WindDirection, Time
+# Extra: WaterTemperature
 def get_data_from_api():
     response = requests.get(
       config.api_endpoint,
@@ -22,6 +55,8 @@ def get_data_from_api():
     json_data = response.json()
     return json_data
 
+# Este método se encarga de recuperar los datos de la API correspondientes a la marea 
+# Tide
 def get_tide_from_api():
   response = requests.get(
   config.api_tide_endpoint,
@@ -46,11 +81,12 @@ def set_data(data):
        aux_data_dict['swellPeriod'] = [x['swellPeriod']['sg']]
        aux_data_dict['windSpeed'] = [x['windSpeed']['sg']]
        aux_data_dict['windDirection'] = [x['windDirection']['sg']]
+       aux_data_dict['waterTemperature'] = [x['waterTemperature']['sg']]
        aux_data_dict['tide'] = [""]
        aux_data_dict['sardinero_uno'] = 0
        aux_data_dict['sardinero_dos'] = 0
-       aux_data_dict['mataleñas'] = 0
-       aux_data_dict['cañones'] = 0
+       aux_data_dict['matalenias'] = 0
+       aux_data_dict['caniones'] = 0
        aux_data_dict['rosamunda'] = 0
        aux_data_dict['valdearenas'] = 0
        aux_data_dict['canallave'] = 0
@@ -203,28 +239,60 @@ def set_real_tides(data,tides_list):
     for element in data:
         date = list(element.keys())[0]
         element[date]['tide'][0] = tides_list[data.index(element)]
-    
+        
+def tides_to_string(tide):
+    if(tide == 1):
+        return "high"
+    if(tide == 0):
+        return "low"
+    if(tide == 0.5):
+        return "medium-low"
+
 def set_calification(data):
     spots = config.spots
     counter = 0
     start = time.time()
+    
+    current_date = datetime.now()
+    dt_string = current_date.strftime("%d/%m/%Y %H:%M:%S")
+    current_time_hour = dt_string[11:13]
+    current_time_day = dt_string[0:2]
     for x in data:
         date = list(x.keys())[0]
-        new_data = {'swellDirection': x[date]['swellDirection'],
-            'swellHeight':x[date]['swellHeight'],
-            'swellPeriod':x[date]['swellPeriod'],
-            'windSpeed':x[date]['windSpeed'],
-            'windDirection':x[date]['windDirection'],
-            'tide':x[date]['tide']
-            }
-        api_data = pd.DataFrame(data=new_data)
-        counter+=1
-        for spot in spots:
-            print("Aplicando el modelo a "+ str(spot) + " vuelta " + str(counter))
-            calification = model(spot,api_data)
-            x[date][spot] = calification
-        if counter == 236:
-            break
+        current_hour = date[11:13]
+        current_day = date[8:10]
+        if (current_time_day == current_day and current_time_hour== current_hour): 
+            new_data = {'swellDirection': x[date]['swellDirection'],
+                    'swellHeight':x[date]['swellHeight'],
+                    'swellPeriod':x[date]['swellPeriod'],
+                    'windSpeed':x[date]['windSpeed'],
+                    'windDirection':x[date]['windDirection'],
+                    'tide':x[date]['tide']
+                    }
+            api_data = pd.DataFrame(data=new_data)
+            print(date)
+            for spot in spots:
+                    print("Aplicando el modelo a "+ str(spot) + " vuelta " + str(counter))
+                    calification = model(spot,api_data)
+                    x[date][spot] = round(calification[0],1)
+
+    # for x in data:
+    #     date = list(x.keys())[0]
+    #     new_data = {'swellDirection': x[date]['swellDirection'],
+    #         'swellHeight':x[date]['swellHeight'],
+    #         'swellPeriod':x[date]['swellPeriod'],
+    #         'windSpeed':x[date]['windSpeed'],
+    #         'windDirection':x[date]['windDirection'],
+    #         'tide':x[date]['tide']
+    #         }
+    #     api_data = pd.DataFrame(data=new_data)
+    #     counter+=1
+    #     for spot in spots:
+    #         print("Aplicando el modelo a "+ str(spot) + " vuelta " + str(counter))
+    #         calification = model(spot,api_data)
+    #         x[date][spot] = round(calification[0],1)
+    #     if counter == 24:
+    #         break
     end = time.time()
     print(end - start)
     
@@ -234,30 +302,127 @@ def model(spot,api_data):
     y = df[spot]
     regresion = LinearRegression()
     regresion.fit(x,y)
-    prediccion = regresion.predict(api_data)
     
+    prediccion = regresion.predict(api_data)
     # evaluacion = regresion.score(x_test, y_test)
     return prediccion
     
-def tides_to_string(tide):
-    if(tide == 1):
-        return "high"
-    if(tide == 0):
-        return "low"
-    if(tide == 0.5):
-        return "medium-low"
+def transform_direction(direction):
+    rounded_direction = round(direction)
+    if rounded_direction in np.arange(0,10):
+        return "N"
+    if rounded_direction in np.arange(10,50):
+        return "N-NE"
+    if rounded_direction in np.arange(50,80):
+        return "NE"
+    if rounded_direction in np.arange(80,100):
+        return "E"
+    if rounded_direction in np.arange(100,140):
+        return "S-SE"
+    if rounded_direction in np.arange(140,170):
+        return "SE"
+    if rounded_direction in np.arange(170,190):
+        return "S"
+    if rounded_direction in np.arange(190,230):
+        return "S-SO"
+    if rounded_direction in np.arange(230,260):
+        return "SO"
+    if rounded_direction in np.arange(260,280):
+        return "O"
+    if rounded_direction in np.arange(280,320):
+        return "O-NO"
+    if rounded_direction in np.arange(320,350):
+        return "NO"
+    if rounded_direction in np.arange(350,360):
+        return "N"
+
+def web_json(aux_list):
+    counter = 0
+    current_date = datetime.now()
+    dt_string = current_date.strftime("%d/%m/%Y %H:%M:%S")
+    spots = config.spots
+    
+    calificated = False
+    aux_data={}
+    aux_data['headers'] = []
+    aux_data['headers'].append('Params')
+    aux_data['swellDirection'] = []
+    aux_data['swellDirection'].append("Swell Direction")
+    aux_data['swellHeight'] = []
+    aux_data['swellHeight'].append("Swell Height (m)")
+    aux_data['swellPeriod'] = []
+    aux_data['swellPeriod'].append("Swell Period (s)")
+    aux_data['windSpeed'] = []
+    aux_data['windSpeed'].append("Wind Speed (m/s)")
+    aux_data['windDirection'] = []
+    aux_data['windDirection'].append("Wind Direction")
+    aux_data['waterTemperature'] = []
+    aux_data['waterTemperature'].append("Water Temperature (C)")
+    aux_data['tide'] = []
+    aux_data['tide'].append("Tide")
+    aux_data['calification'] = []
+    for date in aux_list:
+        fecha = list(date.keys())[0]
+        hora = fecha[11:13]
+        dia = fecha[8:10]
+        
+        if(dt_string[0:2] == dia and hora == dt_string[11:13]):
+            calification_dictionary = {}
+            print("Current day: " +dt_string[0:2]+ " comparado con "+ dia + " y la hora "+ hora)
+            for spot in spots:
+                calification_dictionary[spot] = date[fecha][spot]
+            aux_data['calification'].append(calification_dictionary)
+            calificated = True
+            
+        if hora in config.web_hours:
+            aux_data['headers'].append(dia +"  "+ hora + "h")
+            aux_data['swellDirection'].append(transform_direction(date[fecha]['swellDirection'][0]))
+            aux_data['swellHeight'].append(date[fecha]['swellHeight'][0])
+            aux_data['swellPeriod'].append(date[fecha]['swellPeriod'][0])
+            aux_data['windSpeed'].append(date[fecha]['windSpeed'][0])
+            aux_data['windDirection'].append(transform_direction(date[fecha]['windDirection'][0]))
+            aux_data['waterTemperature'].append(date[fecha]['waterTemperature'][0])
+            aux_data['tide'].append(tides_to_string(date[fecha]['tide'][0]))        
+            counter+=1
+
+        if counter == 35 and calificated == True:
+            break    
+    with open(config.local_storage_json+'web.json', 'w') as fp:
+        json.dump(aux_data, fp, indent  = 5)
+    return aux_data
+
+
 def cloud_function():
+    # API FUNCTIONS
+    # -------------------------
+    # Recibo los datos de la API
     data = get_data_from_api()
-    aux_data = copy.deepcopy(data)
-    aux_list = set_data(aux_data)
+    # Recibo las mareas de la API
     tides = get_tide_from_api()
+    
+    # Realizo una copia del JSON que recibo
+    aux_data = copy.deepcopy(data)
+    # Genero una lista de diccionarios con los datos
+    aux_list = set_data(aux_data)
+    
+    # PREPARACIÓN MAREAS
+    # -------------------------
+    # Junto las mareas con los datos meteorológicos
     set_tides(aux_list,tides)
-    # FALTAN DE CALCULAR TODAS LAS MAREAS las ultimas 4
+    # Calculo las mareas para todas las horas
     tides_list = calculate_tides(aux_list)
+    # Transformo las mareas a equivalentes float para el modlo
     set_real_tides(aux_list,tides_list)
+    
+    # CALIFICACIÓN
+    # -------------------------
     set_calification(aux_list)
+    
+    # JSON_FINAL_PREPARADO
+    # -------------------------
     final_data = web_json(aux_list)
     return final_data
+    # return aux_list
 
 # def web_json(aux_list):
 #     web_dictionary = {}
@@ -373,52 +538,8 @@ def cloud_function():
     
 #     return aux_data
 
-def web_json(aux_list):
-    counter = 0
-    spots = config.spots
-    aux_data={}
-    aux_data['headers'] = []
-    aux_data['headers'].append('Params')
-    aux_data['swellDirection'] = []
-    aux_data['swellDirection'].append("Swell Direction")
-    aux_data['swellHeight'] = []
-    aux_data['swellHeight'].append("Swell Height")
-    aux_data['swellPeriod'] = []
-    aux_data['swellPeriod'].append("Swell Period")
-    aux_data['windSpeed'] = []
-    aux_data['windSpeed'].append("Wind Speed")
-    aux_data['windDirection'] = []
-    aux_data['windDirection'].append("Wind Direction")
-    # waterTemperature = []
-    aux_data['tide'] = []
-    aux_data['tide'].append("Tide")
-    aux_data['calification'] = []
-    for date in aux_list:
-        fecha = list(date.keys())[0]
-        hora = fecha[11:13]
-        dia = fecha[8:10]
-        if hora in config.web_hours:
-            aux_data['headers'].append(dia +" "+ hora + "h")
-            aux_data['swellDirection'].append(date[fecha]['swellDirection'][0])
-            aux_data['swellHeight'].append(date[fecha]['swellHeight'][0])
-            aux_data['swellPeriod'].append(date[fecha]['swellPeriod'][0])
-            aux_data['windSpeed'].append(date[fecha]['windSpeed'][0])
-            aux_data['windDirection'].append(date[fecha]['windDirection'][0])
-            # waterTemperature.append(date[hora]['waterTemperature'][0])
-            aux_data['tide'].append(tides_to_string(date[fecha]['tide'][0]))
-            calification_dictionary = {}
-            for spot in spots:
-                if date[fecha][spot] != 0:
-                    calification_dictionary[spot] = date[fecha][spot][0]
-                if date[fecha][spot] == 0:
-                    calification_dictionary = date[fecha][spot]
-            aux_data['calification'].append(calification_dictionary)
-            counter+=1
-        if counter == 35:
-            break    
-    with open(config.local_storage_json+'web.json', 'w') as fp:
-        json.dump(aux_data, fp, indent  = 5)
-    return aux_data
+
+
 res = cloud_function()
 
 

@@ -11,7 +11,7 @@ const mapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${credential
 function App() {
   return (
     <div className="App">
-      <h1>Aplicacion del TFG</h1>
+      <h1>GForecast</h1>
       <ForecastData />
           <Map
               googleMapURL={mapURL}
