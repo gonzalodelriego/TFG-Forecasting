@@ -5,14 +5,17 @@ import {
     withScriptjs,
     withGoogleMap
 }from 'react-google-maps'
-const json_path = require('/Users/G/Desktop/Uneat/Semestre2/TFG/code-repository/TFG-Forecasting/front/src/storage/web.json')
+//const json_path = require('/Users/G/Desktop/Uneat/Semestre2/TFG/code-repository/TFG-Forecasting/front/src/storage/web.json')
 const Map = (props) =>{
+    const arrayspots = props.webjson.calification
+    const spots = arrayspots[0]
     return (
 
         <GoogleMap
             defaultZoom={10}
             defaultCenter = {{lat : 43.428299, lng: -3.799151}}
         >
+
             {/*PUNTO DE MEDICIÓN*/}
             <Marker
                 title = {'Messurement point'}
@@ -25,7 +28,7 @@ const Map = (props) =>{
             {/*SEGUNDA_SARDINERO*/}
             <Marker
                 title = {'Segunda'}
-                label = {json_path['calification'][0]['sardinero_dos'].toString()}
+                label = {spots.sardinero_dos.toString()}
                 position={{
                     lat: 43.477236,
                     lng: -3.786591
@@ -38,7 +41,7 @@ const Map = (props) =>{
             {/*PRIMERA_SARDINERO*/}
             <Marker
                 title = {'Primera'}
-                label = {json_path['calification'][0]['sardinero_uno'].toString()}
+                label = {spots.sardinero_uno.toString()}
                 position={{
                     lat: 43.473578,
                     lng: -3.781434
@@ -47,7 +50,7 @@ const Map = (props) =>{
             {/*SOMO*/}
             <Marker
                 title = {'Somo'}
-                label = {json_path['calification'][0]['somo'].toString()}
+                label = {spots.somo.toString()}
                 position={{
                     lat: 43.459567,
                     lng: -3.731702
@@ -56,7 +59,7 @@ const Map = (props) =>{
             {/*ISLA DE SANTAMARINA*/}
             <Marker
                 title = {'Isla'}
-                label = {json_path['calification'][0]['santamarina'].toString()}
+                label = {spots.santamarina.toString()}
                 position={{
                     lat: 43.469960,
                     lng: -3.729709
@@ -65,7 +68,7 @@ const Map = (props) =>{
             {/*LANGRE*/}
             <Marker
                 title = {'Langre'}
-                label = {json_path['calification'][0]['langre'].toString()}
+                label = {spots.langre.toString()}
                 position={{
                     lat: 43.475341,
                     lng: -3.729709
@@ -74,7 +77,7 @@ const Map = (props) =>{
             {/*USGO*/}
             <Marker
                 title = {'Usgo'}
-                label = {json_path['calification'][0]['usgo'].toString()}
+                label = {spots.usgo.toString()}
                 position={{
                     lat: 43.439250,
                     lng: -4.000097
@@ -83,7 +86,7 @@ const Map = (props) =>{
             {/*BRUSCO*/}
             <Marker
                 title = {'Brusco'}
-                label = {json_path['calification'][0]['brusco'].toString()}
+                label = {spots.brusco.toString()}
                 position={{
                     lat: 43.469395,
                     lng: -3.483250
@@ -92,7 +95,7 @@ const Map = (props) =>{
             {/*FORTALEZA*/}
             <Marker
                 title = {'Fortaleza'}
-                label = {json_path['calification'][0]['fortaleza'].toString()}
+                label = {spots.fortaleza.toString()}
                 position={{
                     lat: 43.438774,
                     lng: -3.430684
@@ -101,7 +104,7 @@ const Map = (props) =>{
             {/*LAREDO*/}
             <Marker
                 title = {'Laredo'}
-                label = {json_path['calification'][0]['laredo'].toString()}
+                label = {spots.laredo.toString()}
                 position={{
                     lat: 43.416957,
                     lng: -3.434862
@@ -110,7 +113,7 @@ const Map = (props) =>{
             {/*FAROLILLO*/}
             <Marker
                 title = {'Farolillo'}
-                label = {json_path['calification'][0]['farolillo'].toString()}
+                label = {spots.farolillo.toString()}
                 position={{
                     lat: 43.393261,
                     lng: -4.382461
@@ -119,7 +122,7 @@ const Map = (props) =>{
             {/*GERRA*/}
             <Marker
                 title = {'Gerra'}
-                label = {json_path['calification'][0]['gerra'].toString()}
+                label = {spots.gerra.toString()}
                 position={{
                     lat: 43.400513,
                     lng: -4.361021
@@ -128,7 +131,7 @@ const Map = (props) =>{
             {/*CANALLAVE*/}
             <Marker
                 title = {'Canallave'}
-                label = {json_path['calification'][0]['canallave'].toString()}
+                label = {spots.canallave.toString()}
                 position={{
                     lat: 43.452057,
                     lng: -3.961576
@@ -137,7 +140,7 @@ const Map = (props) =>{
             {/*VALDEARENAS*/}
             <Marker
                 title = {'Valdearenas'}
-                label = {json_path['calification'][0]['valdearenas'].toString()}
+                label = {spots.valdearenas.toString()}
                 position={{
                     lat: 43.447482,
                     lng: -3.969581
@@ -146,7 +149,7 @@ const Map = (props) =>{
             {/*ROSAMUNDA*/}
             <Marker
                 title = {'Rosamunda'}
-                label = {json_path['calification'][0]['rosamunda'].toString()}
+                label = {spots.rosamunda.toString()}
                 position={{
                     lat: 43.484427,
                     lng: -3.833730
@@ -155,7 +158,7 @@ const Map = (props) =>{
             {/*MATALEÑAS*/}
             <Marker
                 title = {'Mataleñas'}
-                label = {json_path['calification'][0]['matalenias'].toString()}
+                label = {spots.caniones.toString()}
                 position={{
                     lat: 43.486226,
                     lng: -3.787333
@@ -164,19 +167,12 @@ const Map = (props) =>{
             {/*CAÑONES*/}
             <Marker
                 title = {'Cañones'}
-                label = {json_path['calification'][0]['caniones'].toString()}
+                label = {spots.caniones.toString()}
                 position={{
                     lat: 43.483348,
                     lng: -3.837553
                 }}
             />
-
-
-            {/*            <Marker>
-                position= {{lat: 43.477236, lng: -3.786591}} />
-            </Marker>*/}
-
-
         </GoogleMap>
 
 
