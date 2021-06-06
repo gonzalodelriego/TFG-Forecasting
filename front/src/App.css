@@ -7,3 +7,9 @@ h1{
     font-weight: 100;
     font-family: Gill Sans;
 }
+Loading{
+    position: absolute;
+    margin-left: 700px;
+    margin-right: 0;
+    align-items: center;
+}
