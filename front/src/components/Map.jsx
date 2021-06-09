@@ -388,7 +388,16 @@ const Map = (props) => {
             <h4>Mar de fondo óptimo:  0.8 - 2m</h4>
             <h4>Descripción:</h4>
             <p>
-
+            En el lado opuesto de la playa de San Vicente de la Barquera,
+            encontramos la Playa de Gerra. 
+            Es un punto muy expuesto a los vientos del oeste y noroeste,
+            así como al mar de fondo de la misma dirección.
+            Al ser un fondo de arena, es muy dificil definir la rompiente.
+            Es una ola para nivel intermedio, ya que se suelen formar
+            grandes corrientes que requieren de conocimiento de la zona.
+            El largo camino de acceso hasta la playa, hace de esta un lugar
+            único, ya que muchos surfistas evitan ir debido al tiempo que se 
+            tarda solo en ir.
             </p>
           </div>
         }
@@ -404,7 +413,7 @@ const Map = (props) => {
         infoWindowContent={
           <div>
             <h2>Playa de Canallave</h2>
-            <img src="https://static.eldiariomontanes.es/www/multimedia/202012/08/media/cortadas/surf-kYiH-U1201000552681BHE-624x385@Diario%20Montanes.jpg" alt = "La imagen no se pudo cargar"></img>
+            <img src="https://lh6.googleusercontent.com/-nK6W0s4UTQ0/VN25YVWrVOI/AAAAAAAAGvc/57xjrQFvpYM/%25252523%25252523%25252526ObssesionSurf%25252Bby%25252B%25252540yleniarc.png" alt = "La imagen no se pudo cargar"></img>
             <h3>Calificación: {spots.canallave.toString()}</h3>
             <h4>Fondo: Arena </h4>
             <h4>Latitud: 43.452057 Longitud: -3.961576</h4>
@@ -489,7 +498,16 @@ const Map = (props) => {
             <h4>Mar de fondo óptimo:  1.3 - 2m</h4>
             <h4>Descripción:</h4>
             <p>
-
+            Entrente de la Playa de Rosamunda, actualmente practicamente
+            inexistente, se encuentra un fondo de roca donde rompe una 
+            de las olas más emblemáticas de la zona de Santander.
+            Protegida por los vientos del este por un saliente, Rosamunda
+            es de los puntos más frecuentados debido a su regularidad.
+            Es un punto bastante expuesto al mar de fondo, lo que se traduce,
+            en menor necesidad de olas grandes para que sea posible surfear ahí.
+            Es importante ir con la marea medio alta ya que si está muy baja, el 
+            fondo de Roca aparece en la superficie del agua, haciendo muy peligrosa
+            la práctica del surf.
             </p>
           </div>
         }
@@ -515,7 +533,16 @@ const Map = (props) => {
             <h4>Mar de fondo óptimo:  2m</h4>
             <h4>Descripción:</h4>
             <p>
-
+            Entre Cabo Mayor y Cabo Menor, se encuentra la Playa
+            De Mataleñas. 
+            Al igual que en el sardinero, para que haya olas en esta
+            playa, es necesario que las condiciones meteorológicas sean 
+            un poco potentes.
+            Normalmente, existen dos rompientes claras, una a la izquierda
+            de la playa y otra a la derecha formada por un rebote.
+            Es una ola un tanto impredecible porque a pesar de ser para 
+            todos los niveles, en función de como esté el fondo de Arena
+            ese día, las olas pueden ponerse más fuertes.
             </p>
           </div>
         }
@@ -531,7 +558,7 @@ const Map = (props) => {
         infoWindowContent={
           <div>
             <h2>Playa de La Maruca - Cañones</h2>
-            <img src="https://static.eldiariomontanes.es/www/multimedia/202012/08/media/cortadas/surf-kYiH-U1201000552681BHE-624x385@Diario%20Montanes.jpg" alt = "La imagen no se pudo cargar"></img>
+            <img src="http://2.bp.blogspot.com/-mt6goZTLffo/Vn5vMI_fJVI/AAAAAAAAMI4/80S2R_W0fsc/s1600/12391286_1250548641638652_1950110644071827136_n.jpg" alt = "La imagen no se pudo cargar"></img>
             <h3>Calificación: {spots.caniones.toString()}</h3>
             <h4>Fondo: Roca </h4>
             <h4>Latitud: 43.483348 Longitud: -3.837553</h4>
@@ -540,6 +567,16 @@ const Map = (props) => {
             <h4>Mar de fondo óptimo:  1,1 a 2m</h4>
             <h4>Descripción:</h4>
             <p>
+            Enfrente del Centro de Interpretación del Litoral "La Maruca",
+            las olas rompen en un fondo de roca por lo que no varían.
+            Es la mejora ola para los surfistas de un nivel medio bajo.
+            Es posible coger olas que van del medio metro a los dos metros y medio.
+            Para entrar a la rompiente existen varias maneras
+             - Desde el puerto de la Maruca.
+             - Saltando desde enfrente de la rompiente.
+             - Desde la playa de Rosamunda.
+            El gran rango de tamaños de olas que soporta la rompiente, hacen de 
+            ésta, una de las olas más versátiles.
 
             </p>
           </div>
