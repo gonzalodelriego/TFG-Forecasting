@@ -30,33 +30,41 @@ function App() {
 
 
     const [json_path, getJson] = useState({headers:[],swellDirection:[],swellHeight:[],swellPeriod:[],windSpeed:[],windDirection:[],waterTemperature:[],tide:[],calification:init_state_calification})
+    const [dataloaded,setLoading] = useState(false)
     useEffect(() => {
         (async () => {
             await axios
                 .get(`${process.env.REACT_APP_CLOUD_FUNCTION}`)
                 .then(r => {
                     console.log(r)
-                    getJson(r.data)
+                    getJson(r.data)    
                 })
+                
                 .catch(err => {
                     console.log(err)
 
                 })
+                setLoading(true)
         })();
     }, [])
   return (
     <div className="App">
       <h1>TFG-Forecast</h1>
+      {dataloaded ? (
       <ForecastData
           webjson = {json_path}
       />
-          <Map
-              googleMapURL={mapURL}
-              containerElement= {<div style={{height: '400px'}}/>}
-              mapElement ={<div style={{height: '100%'}}/>}
-              webjson = {json_path}
-              loadingElement ={<p>Cargando</p>}
-          />
+      ):(<Loading/>)}
+      <Map
+          googleMapURL={mapURL}
+          containerElement= {<div style={{height: '400px'}}/>}
+          mapElement ={<div style={{height: '100%'}}/>}
+          webjson = {json_path}
+          loadingElement = {<Loading/>}
+        />
+        
+      
+   
     </div>
   );
 }

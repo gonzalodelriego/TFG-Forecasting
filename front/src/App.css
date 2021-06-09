@@ -1,15 +1,10 @@
-.appbackground{
-    background-color: #b2cdb2;
+body{
+    display: block;
+    background-color: rgb(236, 241, 239);
 }
 h1{
     text-align: center;
     font-size:70px;
-    font-weight: 100;
+    font-weight: 120;
     font-family: Gill Sans;
-}
-Loading{
-    position: absolute;
-    margin-left: 700px;
-    margin-right: 0;
-    align-items: center;
 }
